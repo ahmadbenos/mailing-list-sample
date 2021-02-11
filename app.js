@@ -1,7 +1,7 @@
 const express = require("express");
 const app = express();
 const Mailchimp = require("mailchimp-api-v3");
-const mail_client = new Mailchimp("8971fcae5cb2d2797feebf17ef0caa6c-us1");
+const mail_client = new Mailchimp(process.env.API_KEY);
 
 /*
 THE MAILCHIMP API HAS A LOT OF FEATURES BUT I'LL JUST SHOW HOW TO
@@ -13,7 +13,7 @@ DO THE 2 BASIC THINGS.
 // get all the members in the list
 app.get("/getLists", (req, res) => {
   mail_client
-    .get("/lists/f9435dc0bf")
+    .get(`/lists/${process.env.LIST_ID}`)
     .then((data) => {
       res.send(data);
     })
@@ -34,7 +34,7 @@ app.post("/lists", (req, res) => {
 
   mail_client
     .post({
-      path: "/lists/f9435dc0bf",
+      path: `/lists/${process.env.LIST_ID}`,
       body: {
         members,
       },
